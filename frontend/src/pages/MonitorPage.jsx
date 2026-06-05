@@ -945,7 +945,7 @@ export default function App() {
                     key={m.id}
                     onClick={() => setSelected(m)}
                     className={clsx(
-                      "w-full rounded-xl border px-3 py-3 text-left transition",
+                      "w-full min-w-0 overflow-hidden rounded-xl border px-3 py-3 text-left transition",
                       selected?.id === m.id
                         ? "border-white/20 bg-white/[0.04]"
                         : "border-white/[0.06] hover:border-white/15 hover:bg-white/[0.02]"
@@ -968,7 +968,7 @@ export default function App() {
                           {m.lastCheck?.status_code != null ? <span>HTTP {m.lastCheck.status_code}</span> : null}
                         </div>
                       </div>
-                      <div className="flex shrink-0 items-center gap-1">
+                      <div className="flex shrink-0 items-center gap-0.5">
                         <div
                           role="button"
                           tabIndex={0}
@@ -977,10 +977,10 @@ export default function App() {
                             e.stopPropagation();
                             openEdit(m);
                           }}
-                          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-transparent text-neutral-500 hover:border-white/10 hover:bg-white/[0.06] hover:text-white"
+                          className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-transparent text-neutral-500 hover:border-white/10 hover:bg-white/[0.06] hover:text-white"
                           title="Edit"
                         >
-                          <Pencil size={16} />
+                          <Pencil size={14} />
                         </div>
 
                         <div
@@ -992,10 +992,10 @@ export default function App() {
                             const openUrl = urlForOpening(m.url);
                             if (openUrl) window.open(openUrl, "_blank", "noopener,noreferrer");
                           }}
-                          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-transparent text-neutral-500 hover:border-white/10 hover:bg-white/[0.06] hover:text-white"
+                          className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-transparent text-neutral-500 hover:border-white/10 hover:bg-white/[0.06] hover:text-white"
                           title={`Open: ${urlForOpening(m.url)}`}
                         >
-                          <ExternalLink size={16} />
+                          <ExternalLink size={14} />
                         </div>
 
                         {caps.pm2Logs && m.pm2_name ? (
@@ -1008,10 +1008,10 @@ export default function App() {
                               setLogsPm2Name(m.pm2_name);
                               setLogsOpen(true);
                             }}
-                            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-transparent text-neutral-500 hover:border-white/10 hover:bg-white/[0.06] hover:text-white"
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-transparent text-neutral-500 hover:border-white/10 hover:bg-white/[0.06] hover:text-white"
                             title="Logs (pm2)"
                           >
-                            <Terminal size={16} />
+                            <Terminal size={14} />
                           </div>
                         ) : null}
 
@@ -1023,10 +1023,10 @@ export default function App() {
                             e.stopPropagation();
                             onDelete(m.id);
                           }}
-                          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-transparent text-neutral-500 hover:border-rose-500/20 hover:bg-rose-500/10 hover:text-rose-400"
+                          className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-transparent text-neutral-500 hover:border-rose-500/20 hover:bg-rose-500/10 hover:text-rose-400"
                           title="Delete"
                         >
-                          <Trash2 size={16} />
+                          <Trash2 size={14} />
                         </div>
                       </div>
                     </div>
