@@ -134,7 +134,7 @@ function LatencyChart({ checks, height = 128 }) {
   const lastLabel = pts.length ? fmtTime(pts[pts.length - 1].ts) : "";
 
   return (
-    <div className="rounded-2xl border border-neutral-800 bg-neutral-950/40 p-3">
+    <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-3">
       <div className="flex items-center justify-between">
         <div className="text-xs font-medium text-neutral-200">Response time</div>
         <div className="text-[11px] text-neutral-500">Recent</div>
@@ -252,7 +252,7 @@ function MonitorStats({ checks }) {
   const fmtPct = (v) => (v == null ? "—" : `${v.toFixed(1)}%`);
 
   return (
-    <div className="rounded-2xl border border-neutral-800 bg-neutral-950/40 p-4">
+                <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-4">
       <div className="grid gap-4">
         <StatRow label="Response" sublabel="(Current)" value={stats.currentMs != null ? `${stats.currentMs} ms` : "—"} />
         <StatRow label="Avg. Response" sublabel="(24-hour)" value={stats.avg24 != null ? `${stats.avg24} ms` : "—"} />
@@ -433,18 +433,18 @@ function LogsModal({ open, onClose, pm2Name, enabled }) {
   if (!enabled) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onMouseDown={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" onMouseDown={onClose}>
       <div
-        className="w-full max-w-3xl rounded-2xl border border-neutral-800 bg-neutral-950 shadow-2xl"
+        className="w-full max-w-3xl rounded-2xl border border-white/10 bg-black shadow-2xl"
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between border-b border-neutral-800 px-4 py-3">
+        <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
           <div className="min-w-0">
-            <div className="text-sm font-semibold text-neutral-100">Logs</div>
+            <div className="text-sm font-semibold text-white">Logs</div>
             <div className="truncate text-xs text-neutral-500">pm2: {pm2Name}</div>
           </div>
           <button
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-neutral-800 bg-neutral-900 text-neutral-300 hover:bg-neutral-800"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-neutral-300 hover:bg-white/10"
             onClick={onClose}
             title="Close"
           >
@@ -454,11 +454,11 @@ function LogsModal({ open, onClose, pm2Name, enabled }) {
 
         <div className="grid gap-3 p-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="inline-flex rounded-lg border border-neutral-800 bg-neutral-900 p-1 text-xs">
+            <div className="inline-flex rounded-lg border border-white/10 bg-white/[0.04] p-1 text-xs">
               <button
                 className={clsx(
                   "rounded-md px-3 py-1",
-                  tab === "out" ? "bg-neutral-800 text-neutral-100" : "text-neutral-400 hover:text-neutral-200"
+                  tab === "out" ? "bg-white/10 text-white" : "text-neutral-400 hover:text-neutral-200"
                 )}
                 onClick={() => setTab("out")}
               >
@@ -467,7 +467,7 @@ function LogsModal({ open, onClose, pm2Name, enabled }) {
               <button
                 className={clsx(
                   "rounded-md px-3 py-1",
-                  tab === "err" ? "bg-neutral-800 text-neutral-100" : "text-neutral-400 hover:text-neutral-200"
+                  tab === "err" ? "bg-white/10 text-white" : "text-neutral-400 hover:text-neutral-200"
                 )}
                 onClick={() => setTab("err")}
               >
@@ -488,11 +488,11 @@ function LogsModal({ open, onClose, pm2Name, enabled }) {
                   max={2000}
                   value={lines}
                   onChange={(e) => setLines(Number(e.target.value || 200))}
-                  className="w-24 rounded-md border border-neutral-800 bg-neutral-900 px-2 py-1 text-xs text-neutral-200"
+                  className="w-24 rounded-md border border-white/10 bg-white/[0.04] px-2 py-1 text-xs text-neutral-200"
                 />
               </label>
               <button
-                className="rounded-md border border-neutral-800 bg-neutral-900 px-3 py-1 text-xs text-neutral-200 hover:bg-neutral-800"
+                className="rounded-md border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-neutral-200 hover:bg-white/10"
                 onClick={refresh}
                 disabled={loading}
               >
@@ -507,7 +507,7 @@ function LogsModal({ open, onClose, pm2Name, enabled }) {
             </div>
           ) : null}
 
-          <div ref={scrollRef} className="h-[420px] overflow-auto rounded-xl border border-neutral-800 bg-black/30 p-2 text-[12px] leading-5 text-neutral-200">
+          <div ref={scrollRef} className="h-[420px] overflow-auto rounded-xl border border-white/10 bg-white/[0.02] p-2 text-[12px] leading-5 text-neutral-200">
             {rows?.length ? (
               <div className="grid gap-1">
                 {rows.map((row) => {
@@ -530,7 +530,7 @@ function LogsModal({ open, onClose, pm2Name, enabled }) {
 
                   // Minimal one-liner: time + method/url + rt + status
                   return (
-                    <div key={row.key} className="rounded-xl border border-neutral-900/60 bg-neutral-950/20">
+                    <div key={row.key} className="rounded-xl border border-white/[0.06] bg-white/[0.02]">
                       <button
                         className="w-full rounded-xl px-3 py-2 text-left"
                         onClick={() => setExpandedKey(expanded ? "" : row.key)}
@@ -555,7 +555,7 @@ function LogsModal({ open, onClose, pm2Name, enabled }) {
                               </Badge>
                               <Badge
                                 variant="outline"
-                                className="border border-neutral-800 bg-neutral-900 px-2 py-0.5 text-[11px] text-neutral-300 tabular-nums"
+                                className="border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[11px] text-neutral-300 tabular-nums"
                               >
                                 {rtMs}
                               </Badge>
@@ -565,7 +565,7 @@ function LogsModal({ open, onClose, pm2Name, enabled }) {
                       </button>
 
                       {expanded ? (
-                        <div className="border-t border-neutral-900/60 px-3 py-2">
+                        <div className="border-t border-white/[0.06] px-3 py-2">
                           <pre
                             className="overflow-auto rounded-lg bg-black/40 p-2 font-mono text-[12px] leading-5 text-neutral-200"
                             dangerouslySetInnerHTML={{
@@ -679,23 +679,23 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-neutral-100">
+    <div className="min-h-screen bg-black text-white antialiased">
       <LogsModal open={logsOpen} onClose={() => setLogsOpen(false)} pm2Name={logsPm2Name} enabled={caps.pm2Logs} />
 
       {/* Add Monitor Modal */}
       {addOpen ? (
-        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/60 p-4" onMouseDown={() => setAddOpen(false)}>
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/80 p-4" onMouseDown={() => setAddOpen(false)}>
           <div
-            className="w-full max-w-lg rounded-2xl border border-neutral-800 bg-neutral-950 shadow-2xl"
+            className="w-full max-w-lg rounded-2xl border border-white/10 bg-black shadow-2xl"
             onMouseDown={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between border-b border-neutral-800 px-4 py-3">
+            <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
               <div>
-                <div className="text-sm font-semibold text-neutral-100">Add monitor</div>
+                <div className="text-sm font-semibold text-white">Add monitor</div>
                 <div className="text-xs text-neutral-500">Create a new HTTP monitor</div>
               </div>
               <button
-                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-neutral-800 bg-neutral-900 text-neutral-300 hover:bg-neutral-800"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-neutral-300 hover:bg-white/10"
                 onClick={() => setAddOpen(false)}
                 title="Close"
               >
@@ -713,7 +713,7 @@ export default function App() {
               <div className="grid gap-2">
                 <label className="text-xs text-neutral-400">Name</label>
                 <input
-                  className="w-full rounded-lg border border-neutral-800 bg-neutral-950 px-3 py-2 text-sm outline-none focus:border-neutral-600"
+                  className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white outline-none focus:border-white/25"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Bookmarks Backend"
@@ -724,7 +724,7 @@ export default function App() {
               <div className="grid gap-2">
                 <label className="text-xs text-neutral-400">URL</label>
                 <input
-                  className="w-full rounded-lg border border-neutral-800 bg-neutral-950 px-3 py-2 text-sm outline-none focus:border-neutral-600"
+                  className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white outline-none focus:border-white/25"
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="http://192.168.31.176:8787/health"
@@ -737,14 +737,14 @@ export default function App() {
                   type="number"
                   min={10}
                   max={3600}
-                  className="w-full rounded-lg border border-neutral-800 bg-neutral-950 px-3 py-2 text-sm outline-none focus:border-neutral-600"
+                  className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white outline-none focus:border-white/25"
                   value={interval}
                   onChange={(e) => setIntervalSec(e.target.value)}
                 />
               </div>
 
               {!caps.pm2Logs ? (
-                <div className="rounded-lg border border-neutral-800 bg-neutral-900/40 px-3 py-2 text-xs text-neutral-300">
+                <div className="rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-xs text-neutral-300">
                   PM2 logs aren’t available in this hosted mode. Self-host to enable PM2 log viewing.
                 </div>
               ) : null}
@@ -758,7 +758,7 @@ export default function App() {
               <div className="mt-1 flex items-center justify-end gap-2">
                 <button
                   type="button"
-                  className="rounded-lg border border-neutral-800 bg-neutral-900 px-3 py-2 text-sm text-neutral-200 hover:bg-neutral-800"
+                  className="rounded-lg border border-white/10 bg-transparent px-3 py-2 text-sm text-neutral-200 hover:bg-white/10"
                   onClick={() => setAddOpen(false)}
                 >
                   Cancel
@@ -777,16 +777,15 @@ export default function App() {
         </div>
       ) : null}
 
-      <div className="mx-auto max-w-6xl px-4 py-6">
+      <div className="mx-auto max-w-6xl px-6 py-8 md:py-12">
         <header className="flex items-end justify-between gap-4">
           <div>
-            <div className="text-xs text-neutral-400">moni8</div>
-            <h1 className="text-2xl font-semibold tracking-tight">Monitors</h1>
-            <p className="mt-1 text-sm text-neutral-400">Minimal: checks, charts, pm2 logs.</p>
+            <Link to="/" className="text-xs text-neutral-500 hover:text-white transition-colors">moni8</Link>
+            <h1 className="mt-1 text-3xl font-extrabold tracking-tighter">Monitors</h1>
           </div>
           <div className="flex items-center gap-2">
             <button
-              className="inline-flex items-center gap-2 rounded-lg border border-neutral-800 bg-neutral-900 px-3 py-2 text-sm hover:bg-neutral-800"
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-transparent px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
               onClick={() => setAddOpen(true)}
               disabled={loading}
               title="Add monitor"
@@ -795,7 +794,7 @@ export default function App() {
               Add
             </button>
             <button
-              className="inline-flex items-center gap-2 rounded-lg border border-neutral-800 bg-neutral-900 px-3 py-2 text-sm hover:bg-neutral-800"
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-transparent px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
               onClick={refresh}
               disabled={loading}
             >
@@ -805,12 +804,11 @@ export default function App() {
           </div>
         </header>
 
-        <main className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-[360px_1fr]">
+        <main className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-[360px_1fr]">
           {/* Left: monitor list */}
-          <section className="rounded-2xl border border-neutral-800 bg-neutral-900/40 p-4">
+          <section className="rounded-2xl border border-white/10 p-4">
             <div className="flex items-center justify-between">
-              <div className="text-sm font-medium">Monitors</div>
-              <div className="text-xs text-neutral-500">{monitors.length} total</div>
+              <div className="text-sm font-medium">{monitors.length} monitors</div>
             </div>
 
             <div className="mt-3 grid gap-2">
@@ -823,8 +821,8 @@ export default function App() {
                     className={clsx(
                       "w-full rounded-xl border px-3 py-3 text-left transition",
                       selected?.id === m.id
-                        ? "border-neutral-600 bg-neutral-950"
-                        : "border-neutral-800 bg-neutral-950/40 hover:border-neutral-700"
+                        ? "border-white/20 bg-white/[0.04]"
+                        : "border-white/[0.06] hover:border-white/15 hover:bg-white/[0.02]"
                     )}
                   >
                     <div className="flex items-start justify-between gap-3">
@@ -854,7 +852,7 @@ export default function App() {
                             const openUrl = urlForOpening(m.url);
                             if (openUrl) window.open(openUrl, "_blank", "noopener,noreferrer");
                           }}
-                          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-transparent text-neutral-400 hover:border-neutral-700 hover:bg-neutral-900 hover:text-neutral-200"
+                          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-transparent text-neutral-500 hover:border-white/10 hover:bg-white/[0.06] hover:text-white"
                           title={`Open: ${urlForOpening(m.url)}`}
                         >
                           <Link size={16} />
@@ -870,7 +868,7 @@ export default function App() {
                               setLogsPm2Name(m.pm2_name);
                               setLogsOpen(true);
                             }}
-                            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-transparent text-neutral-400 hover:border-neutral-700 hover:bg-neutral-900 hover:text-neutral-200"
+                            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-transparent text-neutral-500 hover:border-white/10 hover:bg-white/[0.06] hover:text-white"
                             title="Logs (pm2)"
                           >
                             <Terminal size={16} />
@@ -885,7 +883,7 @@ export default function App() {
                             e.stopPropagation();
                             onDelete(m.id);
                           }}
-                          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-transparent text-neutral-400 hover:border-rose-900/40 hover:bg-rose-950/30 hover:text-rose-300"
+                          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-transparent text-neutral-500 hover:border-rose-500/20 hover:bg-rose-500/10 hover:text-rose-400"
                           title="Delete"
                         >
                           <Trash2 size={16} />
@@ -897,7 +895,7 @@ export default function App() {
               })}
 
               {!monitors.length ? (
-                <div className="rounded-xl border border-dashed border-neutral-800 p-6 text-center text-sm text-neutral-500">
+                <div className="rounded-xl border border-dashed border-white/10 p-6 text-center text-sm text-neutral-500">
                   No monitors yet.
                 </div>
               ) : null}
@@ -905,7 +903,7 @@ export default function App() {
           </section>
 
           {/* Right: details */}
-          <section className="rounded-2xl border border-neutral-800 bg-neutral-900/40 p-4">
+          <section className="rounded-2xl border border-white/10 p-4">
             {selectedMonitor ? (
               <div className="space-y-3">
                 <div className="flex items-start justify-between gap-3">
@@ -915,7 +913,7 @@ export default function App() {
                   </div>
                   <div className="flex items-center gap-2">
                     <button
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-neutral-800 bg-neutral-900 text-neutral-300 hover:bg-neutral-800"
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-neutral-300 hover:bg-white/10"
                       onClick={() => {
                         const openUrl = urlForOpening(selectedMonitor.url);
                         if (openUrl) window.open(openUrl, "_blank", "noopener,noreferrer");
@@ -931,7 +929,7 @@ export default function App() {
                 <MonitorStats checks={checks} />
                 <LatencyChart checks={checks} />
 
-                <div className="rounded-2xl border border-neutral-800 bg-neutral-950/40 p-4">
+    <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-4">
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-sm font-medium">Recent checks</div>
@@ -944,15 +942,15 @@ export default function App() {
                 </div>
               </div>
             ) : (
-              <div className="flex h-full min-h-[240px] items-center justify-center rounded-xl border border-dashed border-neutral-800 bg-neutral-950/20 p-6 text-center text-sm text-neutral-500">
+              <div className="flex h-full min-h-[240px] items-center justify-center rounded-xl border border-dashed border-white/10 p-6 text-center text-sm text-neutral-500">
                 Select a monitor to see details.
               </div>
             )}
           </section>
         </main>
 
-        <footer className="mt-6 text-xs text-neutral-600">
-          moni8 • API: GET /api/monitors, POST /api/monitors, DELETE /api/monitors/:id
+        <footer className="mt-8 text-xs text-neutral-600">
+          moni8
         </footer>
       </div>
     </div>
