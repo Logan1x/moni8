@@ -632,6 +632,11 @@ export default function App() {
     try {
       const data = await listMonitors();
       setMonitors(data.monitors || []);
+      setSelected((prev) => {
+        if (prev) return prev;
+        const list = data.monitors || [];
+        return list.length ? list[0] : null;
+      });
     } catch (e) {
       setErr(e.message || String(e));
     } finally {
