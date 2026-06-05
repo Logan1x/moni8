@@ -927,8 +927,19 @@ export default function App() {
               })}
 
               {!monitors.length ? (
-                <div className="rounded-xl border border-dashed border-white/10 p-6 text-center text-sm text-neutral-500">
-                  No monitors yet.
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04]">
+                    <HeartPulse className="h-5 w-5 text-neutral-400" />
+                  </div>
+                  <div className="mt-4 text-sm font-medium text-neutral-200">No monitors yet</div>
+                  <div className="mt-1 text-xs text-neutral-500">Add your first monitor to start tracking uptime.</div>
+                  <button
+                    className="mt-5 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-black transition-all duration-200 hover:scale-105 active:scale-95"
+                    onClick={() => setAddOpen(true)}
+                  >
+                    <Plus size={16} />
+                    Add Monitor
+                  </button>
                 </div>
               ) : null}
             </div>
@@ -974,8 +985,10 @@ export default function App() {
                 </div>
               </div>
             ) : (
-              <div className="flex h-full min-h-[240px] items-center justify-center rounded-xl border border-dashed border-white/10 p-6 text-center text-sm text-neutral-500">
-                Select a monitor to see details.
+              <div className="flex h-full min-h-[240px] flex-col items-center justify-center rounded-xl border border-dashed border-white/10 p-6 text-center">
+                <div className="text-sm text-neutral-500">
+                  {monitors.length ? "Select a monitor to see details." : "Add a monitor to get started."}
+                </div>
               </div>
             )}
           </section>
