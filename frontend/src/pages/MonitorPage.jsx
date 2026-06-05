@@ -806,7 +806,7 @@ export default function App() {
           </div>
           <div className="flex items-center gap-2">
             <button
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-transparent px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
+              className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-transparent px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
               onClick={() => setAddOpen(true)}
               disabled={loading}
               title="Add monitor"
@@ -815,11 +815,11 @@ export default function App() {
               Add
             </button>
             <button
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-transparent px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
+              className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-transparent px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
               onClick={refresh}
               disabled={loading}
             >
-              <RefreshCw size={16} className={clsx("transition-transform duration-300", loading && "animate-spin")} />
+              <RefreshCw size={16} className={clsx("transition-transform duration-300 group-hover:rotate-180", loading && "animate-spin")} />
               Refresh
             </button>
           </div>
