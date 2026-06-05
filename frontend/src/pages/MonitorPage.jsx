@@ -968,7 +968,7 @@ export default function App() {
                           {m.lastCheck?.status_code != null ? <span>HTTP {m.lastCheck.status_code}</span> : null}
                         </div>
                       </div>
-                      <div className="flex items-center gap-1">
+                      <div className="flex shrink-0 items-center gap-1">
                         <div
                           role="button"
                           tabIndex={0}
