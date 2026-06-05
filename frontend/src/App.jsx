@@ -87,7 +87,7 @@ export default function App() {
 
         {/* Incidents section — image + text */}
         <section className="grid gap-12 py-16 md:grid-cols-2 md:items-center md:py-24">
-          <div className="relative overflow-hidden rounded-3xl border border-white/10">
+          <div className="image-tilt relative overflow-hidden rounded-3xl border border-white/10">
             <img
               src="/incidents.jpg"
               alt="Incident response"
