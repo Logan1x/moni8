@@ -1,0 +1,14 @@
+name = "moni8-api"
+main = "src/worker.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+APP_ENV = "prod"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "moni8-db"
+database_id = "db3890a7-08ee-47a9-a8ee-1976ef85468c"
+
+[triggers]
+crons = ["* * * * *"]
