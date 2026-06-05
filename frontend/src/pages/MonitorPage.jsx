@@ -1003,20 +1003,6 @@ export default function App() {
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            openEdit(m);
-                          }}
-                          className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-transparent text-neutral-500 hover:border-white/10 hover:bg-white/[0.06] hover:text-white"
-                          title="Edit"
-                        >
-                          <Pencil size={14} />
-                        </div>
-
-                        <div
-                          role="button"
-                          tabIndex={0}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
                             const openUrl = urlForOpening(m.url);
                             if (openUrl) window.open(openUrl, "_blank", "noopener,noreferrer");
                           }}
@@ -1108,7 +1094,6 @@ export default function App() {
                     >
                       <ExternalLink size={16} />
                     </button>
-                    <div className="text-xs text-neutral-500">id: {selectedMonitor.id}</div>
                   </div>
                 </div>
 
