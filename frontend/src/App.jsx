@@ -72,7 +72,7 @@ export default function App() {
             <span className="block text-neutral-500">We're on it.</span>
           </h1>
 
-          <p className="mt-6 max-w-md text-base text-neutral-500 sm:text-lg animate-slide-up-delay">
+          <p className="mt-6 max-w-lg text-base text-neutral-500 sm:text-lg animate-slide-up-delay whitespace-nowrap">
             Monitor your services. Get alerted before your users do.
           </p>
 
