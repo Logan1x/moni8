@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, Plus, RefreshCw, Trash2, Terminal, X } from "lucide-react";
+import { Link, Plus, RefreshCw, Trash2, Terminal, X, HeartPulse } from "lucide-react";
 import { addMonitor, deleteMonitor, getCapabilities, getChecks, getPm2Logs, listMonitors } from "../api";
 import { Badge } from "@/components/ui/badge";
 
@@ -805,7 +805,12 @@ export default function App() {
       <div className="mx-auto max-w-6xl px-6 py-8 md:py-12">
         <header className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Link to="/" className="text-sm font-semibold tracking-tight text-neutral-400 hover:text-white transition-colors">moni8</Link>
+            <Link to="/" className="flex items-center gap-2.5 text-neutral-400 hover:text-white transition-colors">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/[0.06]">
+                <HeartPulse className="h-4 w-4" />
+              </div>
+              <span className="text-sm font-semibold tracking-tight">Moni8</span>
+            </Link>
             <span className="text-neutral-600">/</span>
             <h1 className="text-2xl font-extrabold tracking-tighter">Monitors</h1>
           </div>

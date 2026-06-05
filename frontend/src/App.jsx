@@ -1,4 +1,4 @@
-import { ArrowRight, Globe } from "lucide-react";
+import { ArrowRight, HeartPulse } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function App() {
@@ -12,7 +12,7 @@ export default function App() {
         <header className="flex items-center justify-between py-6">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.06]">
-              <Globe className="h-4 w-4 text-white/70" />
+              <HeartPulse className="h-4 w-4 text-white/70" />
             </div>
             <span className="text-sm font-semibold tracking-tight">Moni8</span>
             <span className="rounded-full border border-white/10 bg-white/[0.06] px-2 py-0.5 text-[10px] font-medium uppercase tracking-widest text-white/50">
