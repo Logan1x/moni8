@@ -181,6 +181,8 @@ async function main() {
   });
 
   const updateUrl = db.prepare('UPDATE monitors SET url = ? WHERE id = ?');
+  const updateName = db.prepare('UPDATE monitors SET name = ? WHERE id = ?');
+  const updateInterval = db.prepare('UPDATE monitors SET interval_sec = ? WHERE id = ?');
 
   app.patch('/api/monitors/:id', async (req, reply) => {
     const id = Number(req.params.id);
@@ -189,17 +191,21 @@ async function main() {
 
     const Body = z.object({
       pm2Name: z.string().min(1).nullable().optional(),
-      url: z.string().url().nullable().optional()
+      url: z.string().url().nullable().optional(),
+      name: z.string().min(1).nullable().optional(),
+      intervalSec: z.number().int().min(10).max(3600).nullable().optional()
     });
     const parsed = Body.safeParse(req.body);
     if (!parsed.success) return reply.code(400).send({ error: parsed.error.flatten() });
 
-    const { pm2Name, url } = parsed.data;
+    const { pm2Name, url, name, intervalSec } = parsed.data;
     if (pm2Name !== undefined) {
       if (IS_PROD) return reply.code(403).send({ error: 'pm2 logs are disabled in prod' });
       updatePm2Name.run(pm2Name ?? null, id);
     }
     if (url !== undefined) updateUrl.run(url ?? null, id);
+    if (name !== undefined) updateName.run(name ?? m.name, id);
+    if (intervalSec !== undefined) updateInterval.run(intervalSec ?? m.interval_sec, id);
     return { ok: true };
   });
 

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link as ExternalLink, Plus, RefreshCw, Trash2, Terminal, X, HeartPulse } from "lucide-react";
+import { Link as ExternalLink, Plus, RefreshCw, Trash2, Terminal, X, HeartPulse, Pencil } from "lucide-react";
 import { Link } from "react-router-dom";
-import { addMonitor, deleteMonitor, getCapabilities, getChecks, getPm2Logs, listMonitors } from "../api";
+import { addMonitor, deleteMonitor, getCapabilities, getChecks, getPm2Logs, listMonitors, patchMonitor } from "../api";
 import { Badge } from "@/components/ui/badge";
 
 const PUBLIC_HOST = "192.168.31.176";
@@ -626,6 +626,14 @@ export default function App() {
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
   const [interval, setIntervalSec] = useState(60);
+  const [pm2Name, setPm2Name] = useState("");
+
+  const [editOpen, setEditOpen] = useState(false);
+  const [editId, setEditId] = useState(null);
+  const [editName, setEditName] = useState("");
+  const [editUrl, setEditUrl] = useState("");
+  const [editInterval, setEditInterval] = useState(60);
+  const [editPm2Name, setEditPm2Name] = useState("");
 
   async function refresh() {
     setLoading(true);
@@ -672,11 +680,41 @@ export default function App() {
     setLoading(true);
     setErr("");
     try {
-      await addMonitor({ name, url, intervalSec: Number(interval) });
+      await addMonitor({ name, url, intervalSec: Number(interval), pm2Name: pm2Name || undefined });
       setName("");
       setUrl("");
       setIntervalSec(60);
+      setPm2Name("");
       setAddOpen(false);
+      await refresh();
+    } catch (e) {
+      setErr(e.message || String(e));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function openEdit(m) {
+    setEditId(m.id);
+    setEditName(m.name || "");
+    setEditUrl(m.url || "");
+    setEditInterval(m.interval_sec || 60);
+    setEditPm2Name(m.pm2_name || "");
+    setEditOpen(true);
+    setErr("");
+  }
+
+  async function saveEdit() {
+    setLoading(true);
+    setErr("");
+    try {
+      await patchMonitor(editId, {
+        name: editName,
+        url: editUrl,
+        intervalSec: Number(editInterval),
+        pm2Name: editPm2Name || null
+      });
+      setEditOpen(false);
       await refresh();
     } catch (e) {
       setErr(e.message || String(e));
@@ -769,6 +807,18 @@ export default function App() {
                 />
               </div>
 
+              {caps.pm2Logs ? (
+                <div className="grid gap-2">
+                  <label className="text-xs text-neutral-400">PM2 process name <span className="text-neutral-600">(optional)</span></label>
+                  <input
+                    className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white outline-none focus:border-white/25"
+                    value={pm2Name}
+                    onChange={(e) => setPm2Name(e.target.value)}
+                    placeholder="e.g. uptime-api"
+                  />
+                </div>
+              ) : null}
+
               {!caps.pm2Logs ? (
                 <div className="rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-xs text-neutral-300">
                   PM2 logs aren’t available in this hosted mode. Self-host to enable PM2 log viewing.
@@ -797,6 +847,50 @@ export default function App() {
                   <Plus size={16} />
                   Add
                 </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      ) : null}
+
+      {/* Edit Monitor Modal */}
+      {editOpen ? (
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/80 p-4" onMouseDown={() => setEditOpen(false)}>
+          <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-black shadow-2xl" onMouseDown={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+              <div>
+                <div className="text-sm font-semibold text-white">Edit monitor</div>
+                <div className="text-xs text-neutral-500">Update monitor settings</div>
+              </div>
+              <button className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-neutral-300 hover:bg-white/10" onClick={() => setEditOpen(false)} title="Close">
+                <X size={16} />
+              </button>
+            </div>
+            <form className="grid gap-3 p-4" onSubmit={(e) => { e.preventDefault(); saveEdit(); }}>
+              <div className="grid gap-2">
+                <label className="text-xs text-neutral-400">Name</label>
+                <input className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white outline-none focus:border-white/25" value={editName} onChange={(e) => setEditName(e.target.value)} required autoFocus />
+              </div>
+              <div className="grid gap-2">
+                <label className="text-xs text-neutral-400">URL</label>
+                <input className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white outline-none focus:border-white/25" value={editUrl} onChange={(e) => setEditUrl(e.target.value)} required />
+              </div>
+              <div className="grid gap-2">
+                <label className="text-xs text-neutral-400">Interval (sec)</label>
+                <input type="number" min={10} max={3600} className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white outline-none focus:border-white/25" value={editInterval} onChange={(e) => setEditInterval(e.target.value)} />
+              </div>
+              {caps.pm2Logs ? (
+                <div className="grid gap-2">
+                  <label className="text-xs text-neutral-400">PM2 process name</label>
+                  <input className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white outline-none focus:border-white/25" value={editPm2Name} onChange={(e) => setEditPm2Name(e.target.value)} placeholder="e.g. uptime-api" />
+                </div>
+              ) : null}
+              {err ? (
+                <div className="rounded-lg border border-rose-900/40 bg-rose-950/30 px-3 py-2 text-sm text-rose-200">{err}</div>
+              ) : null}
+              <div className="mt-1 flex items-center justify-end gap-2">
+                <button type="button" className="rounded-lg border border-white/10 bg-transparent px-3 py-2 text-sm text-neutral-200 hover:bg-white/10" onClick={() => setEditOpen(false)}>Cancel</button>
+                <button className="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-3 py-2 text-sm font-medium text-neutral-950 hover:bg-emerald-400 disabled:opacity-60" disabled={loading} type="submit">Save</button>
               </div>
             </form>
           </div>
@@ -881,6 +975,20 @@ export default function App() {
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
+                            openEdit(m);
+                          }}
+                          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-transparent text-neutral-500 hover:border-white/10 hover:bg-white/[0.06] hover:text-white"
+                          title="Edit"
+                        >
+                          <Pencil size={16} />
+                        </div>
+
+                        <div
+                          role="button"
+                          tabIndex={0}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
                             const openUrl = urlForOpening(m.url);
                             if (openUrl) window.open(openUrl, "_blank", "noopener,noreferrer");
                           }}
@@ -955,6 +1063,13 @@ export default function App() {
                     <div className="mt-1 truncate text-xs text-neutral-500">{selectedMonitor.url}</div>
                   </div>
                   <div className="flex items-center gap-2">
+                    <button
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-neutral-300 hover:bg-white/10"
+                      onClick={() => openEdit(selectedMonitor)}
+                      title="Edit"
+                    >
+                      <Pencil size={16} />
+                    </button>
                     <button
                       className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-neutral-300 hover:bg-white/10"
                       onClick={() => {
