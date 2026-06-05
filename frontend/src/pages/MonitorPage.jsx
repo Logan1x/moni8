@@ -53,7 +53,7 @@ function HistoryDots({ checks }) {
   );
 }
 
-function LatencyChart({ checks, height = 128 }) {
+function LatencyChart({ checks, height = 160 }) {
   // checks come newest-first; we want oldest->newest for a left-to-right chart
   const pts = (checks || [])
     .slice(0, 120)
@@ -65,8 +65,23 @@ function LatencyChart({ checks, height = 128 }) {
   const pad = 12;
 
   const values = pts.map((c) => Number(c.latency_ms || 0));
-  const max = Math.max(50, ...values);
+  const rawMax = values.length ? Math.max(...values) : 50;
+  // Smart scaling: round up to nearest nice number with 20% headroom
+  const niceMax = (() => {
+    const withPadding = rawMax * 1.25;
+    if (withPadding <= 10) return 10;
+    if (withPadding <= 25) return 25;
+    if (withPadding <= 50) return 50;
+    if (withPadding <= 100) return 100;
+    if (withPadding <= 250) return 250;
+    if (withPadding <= 500) return 500;
+    return Math.ceil(withPadding / 100) * 100;
+  })();
+  const max = niceMax;
   const min = 0;
+
+  // Generate 5 Y-axis ticks (0, 25%, 50%, 75%, 100%)
+  const yTicks = [0, 0.25, 0.5, 0.75, 1].map((t) => Math.round(t * max));
 
   const toX = (i) => {
     if (pts.length <= 1) return pad;
@@ -88,7 +103,6 @@ function LatencyChart({ checks, height = 128 }) {
   }
 
   function linePathForRange(a, b) {
-    // Include one-point overlap with previous segment so the line looks continuous.
     const start = Math.max(0, a - 1);
     return pts
       .slice(start, b + 1)
@@ -144,36 +158,42 @@ function LatencyChart({ checks, height = 128 }) {
         <div className="mt-3 text-xs text-neutral-500">Not enough data yet.</div>
       ) : (
         <div className="mt-2 flex gap-3">
-          {/* Y-axis labels (outside SVG so they don't stretch) */}
-          <div className="flex w-14 flex-col items-center justify-between text-[10px] text-neutral-500">
-            <div className="tabular-nums">{max}ms</div>
-            <div
-              className="text-neutral-600"
-              style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
-            >
-              Resp. Time (ms)
-            </div>
-            <div className="tabular-nums">0ms</div>
+          {/* Y-axis labels */}
+          <div className="flex w-14 flex-col justify-between text-[10px] text-neutral-500 tabular-nums">
+            <div>{max}ms</div>
+            <div>{yTicks[3]}ms</div>
+            <div>{yTicks[2]}ms</div>
+            <div>{yTicks[1]}ms</div>
+            <div>0ms</div>
           </div>
 
           <div className="min-w-0 flex-1">
             <svg
               viewBox={`0 0 ${width} ${height}`}
-              className="block h-[140px] w-full"
+              className="block h-[160px] w-full"
               preserveAspectRatio="none"
               role="img"
               aria-label="Response time chart"
             >
-              {/* subtle grid */}
-              <line x1={pad} y1={baseY} x2={width - pad} y2={baseY} stroke="#262626" strokeWidth="1" />
-              <line x1={pad} y1={pad} x2={width - pad} y2={pad} stroke="#1f1f1f" strokeWidth="1" />
+              {/* horizontal guide lines at each tick */}
+              {yTicks.map((tick, i) => (
+                <line
+                  key={i}
+                  x1={pad}
+                  y1={toY(tick)}
+                  x2={width - pad}
+                  y2={toY(tick)}
+                  stroke={i === 0 ? "#333" : "#222"}
+                  strokeWidth="1"
+                />
+              ))}
 
               {/* area + line segments */}
               {segments.map((s) => (
-                <g key={`${s.ok ? "up" : "down"}-${s.start}-${s.end}`}> 
+                <g key={`${s.ok ? "up" : "down"}-${s.start}-${s.end}`}>
                   <path
                     d={areaPathForRange(s.start, s.end)}
-                    fill={s.ok ? "rgba(34,197,94,0.18)" : "rgba(239,68,68,0.18)"}
+                    fill={s.ok ? "rgba(34,197,94,0.15)" : "rgba(239,68,68,0.15)"}
                     stroke="none"
                   />
                   <path
@@ -778,10 +798,11 @@ export default function App() {
       ) : null}
 
       <div className="mx-auto max-w-6xl px-6 py-8 md:py-12">
-        <header className="flex items-end justify-between gap-4">
-          <div>
-            <Link to="/" className="text-xs text-neutral-500 hover:text-white transition-colors">moni8</Link>
-            <h1 className="mt-1 text-3xl font-extrabold tracking-tighter">Monitors</h1>
+        <header className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <Link to="/" className="text-sm font-semibold tracking-tight text-neutral-400 hover:text-white transition-colors">moni8</Link>
+            <span className="text-neutral-600">/</span>
+            <h1 className="text-2xl font-extrabold tracking-tighter">Monitors</h1>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -790,7 +811,7 @@ export default function App() {
               disabled={loading}
               title="Add monitor"
             >
-              <Plus size={16} />
+              <Plus size={16} className="transition-transform duration-200 group-hover:rotate-90" />
               Add
             </button>
             <button
@@ -798,7 +819,7 @@ export default function App() {
               onClick={refresh}
               disabled={loading}
             >
-              <RefreshCw size={16} />
+              <RefreshCw size={16} className={clsx("transition-transform duration-300", loading && "animate-spin")} />
               Refresh
             </button>
           </div>
@@ -948,10 +969,6 @@ export default function App() {
             )}
           </section>
         </main>
-
-        <footer className="mt-8 text-xs text-neutral-600">
-          moni8
-        </footer>
       </div>
     </div>
   );
