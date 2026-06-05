@@ -286,6 +286,7 @@ function MonitorStats({ checks }) {
 
 function LogsModal({ open, onClose, pm2Name, enabled }) {
   const [tab, setTab] = useState("out");
+  const [viewMode, setViewMode] = useState("raw");
   const [lines, setLines] = useState(200);
   const [auto, setAuto] = useState(true);
   const [data, setData] = useState({ out: [], err: [] });
@@ -369,6 +370,10 @@ function LogsModal({ open, onClose, pm2Name, enabled }) {
   const rows = useMemo(() => {
     const linesArr = Array.isArray(active) ? active : [];
 
+    if (viewMode === "raw") {
+      return linesArr.slice().reverse().map((raw, i) => ({ kind: "raw", key: `${tab}:raw:${i}`, raw: String(raw) }));
+    }
+
     // Merge fastify "incoming request" + "request completed" by reqId
     const byReqId = new Map();
     const order = [];
@@ -430,9 +435,8 @@ function LogsModal({ open, onClose, pm2Name, enabled }) {
       return Number(tb) - Number(ta);
     });
 
-    // Prefer merged rows; if there are lots of non-json lines, include them too.
     return merged.length ? merged : out.slice().reverse();
-  }, [active, tab]);
+  }, [active, tab, viewMode]);
 
   useEffect(() => {
     if (!open) return;
@@ -475,25 +479,49 @@ function LogsModal({ open, onClose, pm2Name, enabled }) {
 
         <div className="grid gap-3 p-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="inline-flex rounded-lg border border-white/10 bg-white/[0.04] p-1 text-xs">
-              <button
-                className={clsx(
-                  "rounded-md px-3 py-1",
-                  tab === "out" ? "bg-white/10 text-white" : "text-neutral-400 hover:text-neutral-200"
-                )}
-                onClick={() => setTab("out")}
-              >
-                stdout
-              </button>
-              <button
-                className={clsx(
-                  "rounded-md px-3 py-1",
-                  tab === "err" ? "bg-white/10 text-white" : "text-neutral-400 hover:text-neutral-200"
-                )}
-                onClick={() => setTab("err")}
-              >
-                stderr
-              </button>
+            <div className="flex items-center gap-2">
+              <div className="inline-flex rounded-lg border border-white/10 bg-white/[0.04] p-1 text-xs">
+                <button
+                  className={clsx(
+                    "rounded-md px-3 py-1",
+                    tab === "out" ? "bg-white/10 text-white" : "text-neutral-400 hover:text-neutral-200"
+                  )}
+                  onClick={() => setTab("out")}
+                >
+                  stdout
+                </button>
+                <button
+                  className={clsx(
+                    "rounded-md px-3 py-1",
+                    tab === "err" ? "bg-white/10 text-white" : "text-neutral-400 hover:text-neutral-200"
+                  )}
+                  onClick={() => setTab("err")}
+                >
+                  stderr
+                </button>
+              </div>
+
+              <div className="inline-flex rounded-lg border border-white/10 bg-white/[0.04] p-1 text-xs">
+                <button
+                  className={clsx(
+                    "rounded-md px-3 py-1",
+                    viewMode === "raw" ? "bg-white/10 text-white" : "text-neutral-400 hover:text-neutral-200"
+                  )}
+                  onClick={() => setViewMode("raw")}
+                >
+                  Raw
+                </button>
+                <button
+                  className={clsx(
+                    "rounded-md px-3 py-1",
+                    viewMode === "merged" ? "bg-white/10 text-white" : "text-neutral-400 hover:text-neutral-200"
+                  )}
+                  onClick={() => setViewMode("merged")}
+                  title="Merge incoming request + request completed by reqId"
+                >
+                  Response Time
+                </button>
+              </div>
             </div>
 
             <div className="flex items-center gap-3 text-xs text-neutral-400">
