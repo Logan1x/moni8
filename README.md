@@ -1,6 +1,6 @@
 # moni8
 
-A tiny uptime monitor — extremely minimal, no bloat.
+A tiny uptime monitor, extremely minimal, no bloat.
 
 **Live:** [moni8.khushal.work](https://moni8.khushal.work)
 
