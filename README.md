@@ -1,37 +1,93 @@
 # moni8
 
-A tiny uptime monitor (Uptime Kuma–like, but extremely minimal):
-- interval-based HTTP checks (default 60s)
-- add monitors via API + UI
-- pass/fail history (green/red dots)
+A tiny uptime monitor — extremely minimal, no bloat.
 
 **Live:** [moni8.khushal.work](https://moni8.khushal.work)
 
 ![moni8 landing](landing-page.png)
 ![moni8 dashboard](moni8-screenshot.png)
 
-## Run
+## Features
 
-### Backend
+- Interval-based HTTP checks (default 60s)
+- Add monitors via API or UI
+- Pass/fail history with latency charts
+- PM2 log viewer (self-hosted only)
+- Cron-triggered health checks (Cloudflare)
+
+## Deployed on Cloudflare
+
+| Service | URL |
+|---|---|
+| Frontend | [moni8-web.pages.dev](https://moni8-web.pages.dev) |
+| Backend API | [moni8-api.workers.dev](https://moni8-api.khushal20210-t1kxhglw.workers.dev) |
+| Database | D1 (SQLite on Cloudflare) |
+
+## Self-Hosting
+
+Self-host to get the **PM2 logs** feature (Terminal button in the dashboard).
+
+### Quick Start
+
 ```bash
+# Backend
 cd backend
 npm install
-npm run dev
-```
-Backend: http://localhost:4070
+APP_ENV=dev PORT=4070 node src/server.js
 
-### Frontend
-```bash
+# Frontend (new terminal)
 cd frontend
 npm install
 npm run dev -- --host 0.0.0.0 --port 4071
 ```
-Frontend: http://localhost:4071
 
-> Tip (LAN): open the UI via your machine IP (e.g. `http://192.168.31.176:4071`) so it works from other devices.
+- Backend: http://localhost:4070
+- Frontend: http://localhost:4071
+
+### Production Mode
+
+```bash
+# Backend (PM2 logs disabled)
+APP_ENV=prod PORT=4070 node src/server.js
+
+# Frontend
+cd frontend
+npm run build
+```
+
+If frontend and backend are on different origins, set CORS:
+```bash
+APP_ENV=prod CORS_ORIGIN=https://your-frontend.com PORT=4070 node src/server.js
+```
+
+### PM2 Logs
+
+The Terminal/PM2 logs feature only works when self-hosted:
+- Run your services under PM2 on the same machine
+- Create monitors with a `pm2_name` (e.g. `uptime-api`)
+- Click the Terminal icon in the dashboard to view logs
+
+This feature is disabled on Cloudflare for security.
 
 ## API
-- `GET /api/monitors`
-- `POST /api/monitors` `{ name, url, intervalSec }`
-- `DELETE /api/monitors/:id`
-- `GET /api/monitors/:id/checks?limit=90`
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/monitors` | List all monitors |
+| `POST` | `/api/monitors` | Create monitor `{ name, url, intervalSec }` |
+| `PATCH` | `/api/monitors/:id` | Update monitor |
+| `DELETE` | `/api/monitors/:id` | Delete monitor |
+| `GET` | `/api/monitors/:id/checks?limit=90` | Get check history |
+| `GET` | `/api/capabilities` | Feature flags |
+| `GET` | `/health` | Health check |
+
+## Tech Stack
+
+- **Frontend:** React, Tailwind CSS v4, Vite
+- **Backend:** Fastify (self-host) / Hono (Cloudflare Workers)
+- **Database:** SQLite via better-sqlite3 (self-host) / D1 (Cloudflare)
+- **Scheduling:** setInterval (self-host) / Cron Triggers (Cloudflare)
+
+## License
+
+MIT
