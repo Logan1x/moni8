@@ -2,7 +2,7 @@
 
 A tiny uptime monitor, extremely minimal, no bloat.
 
-**Live:** [moni8.khushal.work](https://moni8.khushal.work)
+**Live:** [moni8.khushal.live](https://moni8.khushal.live/?utm_source=github&utm_medium=repo)
 
 ![moni8 landing](landing-page.png)
 ![moni8 dashboard](moni8-screenshot.png)
@@ -14,14 +14,6 @@ A tiny uptime monitor, extremely minimal, no bloat.
 - Pass/fail history with latency charts
 - PM2 log viewer (self-hosted only)
 - Cron-triggered health checks (Cloudflare)
-
-## Deployed on Cloudflare
-
-| Service | URL |
-|---|---|
-| Frontend | [moni8-web.pages.dev](https://moni8-web.pages.dev) |
-| Backend API | [moni8-api.workers.dev](https://moni8-api.khushal20210-t1kxhglw.workers.dev) |
-| Database | D1 (SQLite on Cloudflare) |
 
 ## Self-Hosting
 
