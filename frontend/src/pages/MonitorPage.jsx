@@ -36,7 +36,7 @@ function StatusPip({ ok }) {
 }
 
 function HistoryDots({ checks }) {
-  const dots = (checks || []).slice(0, 30);
+  const dots = (checks || []).slice(0, 120);
   return (
     <div className="flex flex-wrap gap-1">
       {dots.map((c) => (
@@ -1163,7 +1163,7 @@ export default function App() {
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-sm font-medium">Recent checks</div>
-                      <div className="text-xs text-neutral-500">Last 30</div>
+                      <div className="text-xs text-neutral-500">Last 120</div>
                     </div>
                   </div>
                   <div className="mt-3">
