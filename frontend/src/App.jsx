@@ -100,7 +100,7 @@ export default function App() {
         <section className="grid gap-12 py-16 md:grid-cols-2 md:items-center md:py-24">
           <div className="image-tilt relative overflow-hidden rounded-3xl border border-white/10">
             <img
-              src="/incidents.jpg"
+              src="/incidents.webp"
               alt="Incident response"
               className="h-full w-full object-cover opacity-80"
             />
