@@ -1,4 +1,4 @@
-import { ArrowRight, HeartPulse, Activity, Terminal, Plus, Check } from "lucide-react";
+import { ArrowRight, HeartPulse, Activity, Terminal, Plus, Check, Github } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const features = [
@@ -57,12 +57,23 @@ export default function App() {
             </span>
           </div>
 
-          <Link
-            to="/monitor"
-            className="rounded-full border border-white/15 bg-transparent px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
-          >
-            Open Dashboard
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              to="/monitor"
+              className="rounded-full border border-white/15 bg-transparent px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
+            >
+              Open Dashboard
+            </Link>
+            <a
+              href="https://github.com/Logan1x/moni8"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-neutral-400 transition hover:bg-white/10 hover:text-white"
+              title="GitHub"
+            >
+              <Github className="h-4 w-4" />
+            </a>
+          </div>
         </header>
 
         {/* Hero */}
