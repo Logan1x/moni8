@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link as ExternalLink, Plus, RefreshCw, Trash2, Terminal, X, HeartPulse, Pencil } from "lucide-react";
+import { Link as ExternalLink, Plus, RefreshCw, Trash2, Terminal, X, HeartPulse, Pencil, Github } from "lucide-react";
 import { Link } from "react-router-dom";
 import { addMonitor, deleteMonitor, getCapabilities, getChecks, getPm2Logs, listMonitors, patchMonitor } from "../api";
 import { Badge } from "@/components/ui/badge";
@@ -957,6 +957,15 @@ export default function App() {
               <RefreshCw size={16} className={clsx("transition-transform duration-300 group-hover:rotate-180", loading && "animate-spin")} />
               Refresh
             </button>
+            <a
+              href="https://github.com/Logan1x/moni8"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-neutral-400 transition hover:bg-white/10 hover:text-white"
+              title="GitHub"
+            >
+              <Github className="h-4 w-4" />
+            </a>
           </div>
         </header>
 
