@@ -5,6 +5,8 @@ A tiny uptime monitor (Uptime Kuma–like, but extremely minimal):
 - add monitors via API + UI
 - pass/fail history (green/red dots)
 
+![moni8 screenshot](moni8-screenshot.png)
+
 ## Run
 
 ### Backend
