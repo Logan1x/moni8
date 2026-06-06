@@ -2,7 +2,7 @@
 
 A tiny uptime monitor, extremely minimal, no bloat.
 
-**Live:** [moni8.khushal.live](https://moni8.khushal.live/?utm_source=github&utm_medium=repo)
+**Live:** [moni8.khushal.work](https://moni8.khushal.work/?utm_source=github&utm_medium=repo)
 
 ![moni8 landing](landing-page.png)
 ![moni8 dashboard](moni8-screenshot.png)
