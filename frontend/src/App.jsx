@@ -68,7 +68,7 @@ export default function App() {
               href="https://github.com/Logan1x/moni8"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-neutral-400 transition hover:bg-white/10 hover:text-white"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white transition hover:bg-white/10"
               title="GitHub"
             >
               <Github className="h-4 w-4" />

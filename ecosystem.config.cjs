@@ -19,6 +19,15 @@ module.exports = {
         NODE_ENV: "development",
         APP_ENV: "dev"
       }
+    },
+    {
+      name: "image-uploader",
+      cwd: __dirname + "/../image-uploader",
+      script: "server.js",
+      interpreter: "node",
+      env: {
+        NODE_ENV: "development"
+      }
     }
   ]
 };
